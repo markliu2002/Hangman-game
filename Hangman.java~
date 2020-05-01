@@ -1,0 +1,104 @@
+import java.util.*;
+
+public class Hangman {
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+
+        Words obj = new Words();
+
+        int lives = 12;
+
+        char letter;
+
+        char[] alphabet = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',};
+
+        obj.getWord();
+
+        // stores the word but as a bunch of chars(in same order tho, at end can do
+        // word.charAt(i) == charWordList.get(i)
+        // THIS ISN't EVEN USED?!!       ArrayList<Character> charRealWordList = new ArrayList<Character>( (obj.word).length() );
+        ArrayList<Character> usedLetters = new ArrayList<Character>();
+
+        // array, same chars and order as the array list so we not using the arraylist version anymore.
+        // regular array easier to use but had to use arraylist first b/c didn't know word length
+        char[] charRealWordArray = new char[(obj.word).length()];
+
+        String[] stringGuessedWordArray = new String[(obj.word).length()];
+
+
+        // for loop to set the characters of the word to this char array
+        for (int i = 0; i < (obj.word).length(); i++) {
+            charRealWordArray[i] = (obj.word).charAt(i);
+            stringGuessedWordArray[i] = "_";
+        }
+
+        // stringRealWord is the real word
+        String stringRealWord = String.copyValueOf(charRealWordArray);
+        // stringGuessedWord is the guessed word
+        String stringGuessedWord = String.join("", stringGuessedWordArray);
+
+
+        System.out.println(stringRealWord);
+        System.out.println(stringGuessedWord);
+
+        while ((!stringGuessedWord.equals(stringRealWord)) && lives > 0) {
+
+       //     stringGuessedWord = Arrays.toString(stringGuessedWordArray);
+            stringGuessedWord = String.join("", stringGuessedWordArray);
+
+            System.out.println("Current word: " + stringGuessedWord); /////////////////////
+            System.out.println("Lives: " + lives);
+            System.out.print("You have used these letters: ");
+            for (char c : usedLetters) {
+                System.out.print(c + " "); ///////////////////////// method?
+            }
+
+            System.out.println("Guess a letter :)");
+            letter = Character.toUpperCase(input.next().charAt(0));
+
+            // check if the letter is in the alphabet.
+            if (String.valueOf(alphabet).contains(String.valueOf(letter))) {
+
+                // check if the letter is in the Real Word.
+                if (stringRealWord.contains(String.valueOf(letter))) {
+
+                    // for loop to cycle through the Real Word.
+                    for (int j = 0; j < (obj.word).length(); j++) {
+                        // check if user's letter is equal to the current letter in the Real Word.
+                        if (stringRealWord.charAt(j) == letter) {
+                            // guessed word starts at ______, if they get a letter, change that specefic spot, Ex: ____A_
+                            stringGuessedWordArray[j] = String.valueOf(letter);
+                        }
+                    }
+                    usedLetters.add(letter);
+                }
+
+
+                // else means user's letter is not in the Real word.
+                else {
+                    usedLetters.add(letter);
+                    lives = lives - 1;
+                }
+            }
+
+
+            // "else" means the user's letter is not in the alphabet.
+            else {
+            }
+
+            
+
+        }
+
+        if(lives == 0) {
+            System.out.println("G A M E   O V E R");
+        }
+        else if(stringGuessedWord.equals(stringRealWord)) {
+            System.out.println("Y O U   W I N !");
+        }
+
+
+    }
+}
